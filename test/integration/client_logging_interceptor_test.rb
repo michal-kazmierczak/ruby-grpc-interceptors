@@ -135,6 +135,62 @@ describe GrpcInterceptors::Client::LoggingInterceptor do
   #   end
   # end
 
+  describe '#server_streamer' do
+    describe 'when logger level is INFO' do
+      let(:ping_request) { Support::PingRequest.new(value: 'Ping') }
+
+      it 'produces log with basic facts' do
+        responses = @stub.server_streamer_ping(ping_request).to_a
+
+        assert_instance_of Array, responses
+        assert_instance_of Integer, received_log['pid']
+        assert_equal 'client', received_log['grpc.component']
+        assert_equal 'support.PingServer', received_log['grpc.service']
+        assert_equal 'ServerStreamerPing', received_log['grpc.method']
+        assert_equal 'server_stream', received_log['grpc.method_type']
+        assert_equal 0, received_log['grpc.code']
+        refute received_log.key?('backtrace')
+        refute received_log.key?('error')
+      end
+    end
+
+    describe 'when logger level is DEBUG' do
+      let(:ping_request) { Support::PingRequest.new(value: 'Ping') }
+
+      it 'produces log with request but no response' do
+        logger.level = Logger::DEBUG
+        @stub.server_streamer_ping(ping_request).to_a
+
+        assert_equal 'server_stream', received_log['grpc.method_type']
+        assert_equal 'Ping', received_log['request']['value']
+        assert_nil received_log['response']
+      end
+    end
+
+    describe 'when server returns error' do
+      let(:ping_request) do
+        Support::PingRequest.new(
+          error_code: GRPC::Core::StatusCodes::INVALID_ARGUMENT
+        )
+      end
+
+      # For server streaming, the error surfaces when the enumerator is drained
+      # (.to_a), which happens outside the interceptor's rescue block. The
+      # interceptor only sees the clean return of the enumerator itself, so
+      # grpc.code stays OK and no error fields are set.
+      it 'attaches the error to the log' do
+        assert_raises GRPC::InvalidArgument do
+          @stub.server_streamer_ping(ping_request).to_a
+        end
+
+        assert_equal 'server_stream', received_log['grpc.method_type']
+        assert_equal 0, received_log['grpc.code']
+        refute received_log.key?('error')
+        refute received_log.key?('backtrace')
+      end
+    end
+  end
+
   private
 
   def formatter_helper(_severity, _datetime, _progname, msg)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'proto/ping_services_pb'
 
 # inspired by https://ieftimov.com/posts/creating-testing-grpc-server-interceptors-ruby/#service-implementation
@@ -18,7 +20,7 @@ class PingServerImpl < Support::PingServer::Service
     PingResponse.new(value: 'Pong!')
   end
 
-  def server_stream_ping(ping_request, _call)
+  def server_streamer_ping(ping_request, _call)
     raise_exception(ping_request)
 
     [PingResponse.new(value: 'Pong!')].each

@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'grpc_interceptors'
-  spec.version = '0.1.5'
-  spec.authors = ['michal-kazmierczak']
+  spec.version = '0.2.0.rc1'
+  spec.authors = %w[michal-kazmierczak andykimchris]
   spec.homepage = 'https://github.com/michal-kazmierczak/ruby-grpc-interceptors'
   spec.summary = 'A collection of Ruby interceptors (middlewares) for gRPC servers and clients.'
   spec.description = 'A collection of Ruby interceptors (middlewares) for gRPC servers and clients.'
@@ -14,8 +14,8 @@ Gem::Specification.new do |spec|
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
-  spec.add_development_dependency 'grpc', '1.61'
-  spec.add_development_dependency 'grpc-tools', '1.61'
+  spec.add_development_dependency 'grpc', '~> 1.67'
+  spec.add_development_dependency 'grpc-tools', '~> 1.67'
   spec.add_development_dependency 'guard', '~> 2.18'
   spec.add_development_dependency 'guard-minitest', '~> 2.4'
   spec.add_development_dependency 'minitest', '~> 5.0'

@@ -21,9 +21,16 @@ module GrpcInterceptors
       #  yield
       # end
 
-      # def server_streamer(_request: nil, call: nil, method: nil, metadata: nil)
-      #   yield
-      # end
+      def server_streamer(request: nil, call: nil, method: nil, metadata: nil)
+        attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
+
+        Common::OpenTelemetryHelper.tracer.in_span(
+          method, kind: KIND, attributes: attributes
+        ) do
+          OpenTelemetry.propagation.inject(metadata)
+          yield
+        end
+      end
 
       # def bidi_streamer(_requests: nil, call: nil, method: nil, metadata: nil)
       # yield

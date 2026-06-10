@@ -3,7 +3,6 @@
 module GrpcInterceptors
   module Common
     module Logging
-
       def self.yield_and_log(
         logger: nil, request: nil, method: nil, method_type: nil, kind: nil
       )
@@ -22,7 +21,7 @@ module GrpcInterceptors
         extra_fields ||= {}
         extra_fields['grpc.code'] = grpc_code
 
-        if logger.level == ::Logger::Severity::DEBUG && !response.nil?
+        if logger.level == ::Logger::Severity::DEBUG && !response.nil? && !response.is_a?(Enumerator)
           extra_fields['response'] = Common::GrpcHelper.proto_to_h(response)
         end
 
