@@ -10,7 +10,7 @@ module GrpcInterceptors
         attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
 
         Common::OpenTelemetryHelper.tracer.in_span(
-          method, kind: KIND, attributes: attributes
+          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
         ) do
           OpenTelemetry.propagation.inject(metadata)
           yield
@@ -25,7 +25,7 @@ module GrpcInterceptors
         attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
 
         Common::OpenTelemetryHelper.tracer.in_span(
-          method, kind: KIND, attributes: attributes
+          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
         ) do
           OpenTelemetry.propagation.inject(metadata)
           yield

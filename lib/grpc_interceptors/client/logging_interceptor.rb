@@ -17,7 +17,7 @@ module GrpcInterceptors
       )
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'unary', kind: KIND, &block
+          method_type: 'unary', kind: GrpcInterceptors::Client::KIND, &block
         )
       end
 
@@ -36,7 +36,7 @@ module GrpcInterceptors
       )
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'server_stream', kind: KIND, &block
+          method_type: 'server_stream', kind: GrpcInterceptors::Client::KIND, &block
         )
       end
 

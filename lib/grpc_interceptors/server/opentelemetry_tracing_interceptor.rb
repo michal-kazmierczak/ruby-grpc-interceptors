@@ -16,7 +16,7 @@ module GrpcInterceptors
           Common::OpenTelemetryHelper.tracer.in_span(
             route_name,
             attributes: attributes,
-            kind: KIND,
+            kind: GrpcInterceptors::Server::KIND,
             &block
           )
         end
