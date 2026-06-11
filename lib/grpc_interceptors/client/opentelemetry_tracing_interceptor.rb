@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../client'
 require_relative '../common/grpc_helper'
 require_relative '../common/opentelemetry_helper'
 
@@ -10,7 +11,7 @@ module GrpcInterceptors
         attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
 
         Common::OpenTelemetryHelper.tracer.in_span(
-          method, kind: KIND, attributes: attributes
+          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
         ) do
           OpenTelemetry.propagation.inject(metadata)
           yield
@@ -21,9 +22,16 @@ module GrpcInterceptors
       #  yield
       # end
 
-      # def server_streamer(_request: nil, call: nil, method: nil, metadata: nil)
-      #   yield
-      # end
+      def server_streamer(request: nil, call: nil, method: nil, metadata: nil)
+        attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
+
+        Common::OpenTelemetryHelper.tracer.in_span(
+          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
+        ) do
+          OpenTelemetry.propagation.inject(metadata)
+          yield
+        end
+      end
 
       # def bidi_streamer(_requests: nil, call: nil, method: nil, metadata: nil)
       # yield

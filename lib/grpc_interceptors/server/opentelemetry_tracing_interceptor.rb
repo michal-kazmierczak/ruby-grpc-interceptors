@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../client'
 require_relative '../common/grpc_helper'
 require_relative '../common/opentelemetry_helper'
 
@@ -16,7 +17,7 @@ module GrpcInterceptors
           Common::OpenTelemetryHelper.tracer.in_span(
             route_name,
             attributes: attributes,
-            kind: KIND,
+            kind: GrpcInterceptors::Server::KIND,
             &block
           )
         end

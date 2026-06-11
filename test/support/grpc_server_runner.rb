@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # inspired by https://github.com/grpc/grpc/blob/master/src/ruby/spec/support/helpers.rb
 

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../client'
 require_relative '../common/grpc_helper'
 require_relative '../common/logging'
 
 module GrpcInterceptors
   module Client
     class LoggingInterceptor < ::GRPC::ClientInterceptor
-
       def initialize(logger)
         @logger = logger
 
@@ -18,7 +18,7 @@ module GrpcInterceptors
       )
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'unary', kind: KIND, &block
+          method_type: 'unary', kind: GrpcInterceptors::Client::KIND, &block
         )
       end
 
@@ -32,9 +32,14 @@ module GrpcInterceptors
         Common::Logging.yield_and_log(method: method, method_type: 'client_stream', &block)
       end
 
-      # def server_streamer(_request: nil, call: nil, method: nil, metadata: nil)
-      #  yield
-      # end
+      def server_streamer(
+        request: nil, call: nil, method: nil, metadata: nil, &block
+      )
+        Common::Logging.yield_and_log(
+          logger: @logger, request: request, method: method,
+          method_type: 'server_stream', kind: GrpcInterceptors::Client::KIND, &block
+        )
+      end
 
       # def bidi_streamer(_requests: nil, call: nil, method: nil, metadata: nil)
       #  yield

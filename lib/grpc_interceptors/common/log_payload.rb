@@ -3,7 +3,6 @@
 module GrpcInterceptors
   module Common
     module Logger
-
       ##
       # Log a gRPC interaction from the client side.
       #

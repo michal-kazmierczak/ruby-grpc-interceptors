@@ -49,4 +49,28 @@ describe GrpcInterceptors::Client::OpenTelemetryTracingInterceptor do
       )
     end
   end
+
+  describe '#server_streamer' do
+    let(:ping_request) { Support::PingRequest.new }
+
+    it 'records span for stream lifetime' do
+      @stub.server_streamer_ping(ping_request).to_a
+
+      assert_equal 1, otel_exporter.finished_spans.size
+
+      span = otel_exporter.finished_spans.first
+
+      assert_equal '/support.PingServer/ServerStreamerPing', span.name
+      assert_equal :client, span.kind
+      assert_equal 3, span.total_recorded_attributes
+      assert_equal(
+        {
+          'rpc.system' => 'grpc',
+          'rpc.service' => 'support.PingServer',
+          'rpc.method' => 'ServerStreamerPing'
+        },
+        span.attributes
+      )
+    end
+  end
 end
