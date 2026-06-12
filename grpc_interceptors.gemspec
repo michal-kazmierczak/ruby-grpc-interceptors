@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-reporters', '~> 1.6.1'
   spec.add_development_dependency 'opentelemetry-sdk', '~> 1.0'
   spec.add_development_dependency 'opentelemetry-test-helpers'
+  spec.add_development_dependency 'ostruct'
   spec.add_development_dependency 'pry', '~> 0.14'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rubocop', '~> 1.60.1'

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    grpc_interceptors (0.2.0.rc3)
+    grpc_interceptors (0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -43,7 +43,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     lumberjack (1.2.10)
     method_source (1.0.0)
-    minitest (5.22.2)
+    minitest (5.27.0)
     minitest-reporters (1.6.1)
       ansi
       builder
@@ -66,6 +66,7 @@ GEM
     opentelemetry-semantic_conventions (1.10.0)
       opentelemetry-api (~> 1.0)
     opentelemetry-test-helpers (0.4.0)
+    ostruct (0.6.3)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -127,6 +128,7 @@ DEPENDENCIES
   minitest-reporters (~> 1.6.1)
   opentelemetry-sdk (~> 1.0)
   opentelemetry-test-helpers
+  ostruct
   pry (~> 0.14)
   rake (~> 13.0)
   rubocop (~> 1.60.1)
