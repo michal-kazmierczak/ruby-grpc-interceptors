@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module GrpcInterceptors
-  module Client
-    KIND = :client
+  module Kind
+    CLIENT = :client
+    SERVER = :server
   end
 end

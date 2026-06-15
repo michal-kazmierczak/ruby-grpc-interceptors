@@ -33,8 +33,6 @@ When the `LOG_LEVEL` env variable is set to `INFO` then the server logs out.
 
 When the `LOG_LEVEL` env variable is set to `DEBUG` then the server additionally adds the request to the log message. (Note, adding the response is currently blocked by [this gRPC issue](https://github.com/grpc/grpc/pull/26547).)
 
-
-
 ### StatsD metrics
 
 ```ruby
@@ -47,11 +45,12 @@ GRPC::RpcServer.new(
 
 The server emits a histogram metric called `grpc_latency_seconds` with the following tags:
 
- - `grpc_method` representing the called method
- - `grpc_service` representing the service
- - `grpc_type` representing the gRPC kind of method
+- `grpc_method` representing the called method
+- `grpc_service` representing the service
+- `grpc_type` representing the gRPC kind of method
 
 #### [Experimental] A gauge metric of the server jobs queue
+
 ```
 # https://github.com/grpc/grpc/blob/v1.62.0/src/ruby/lib/grpc/generic/rpc_server.rb#L43C9-L43C21
 server.instance_variable_get(:@pool).jobs_waiting
@@ -62,7 +61,7 @@ server.instance_variable_get(:@pool).jobs_waiting
 ```ruby
 GRPC::RpcServer.new(
   interceptors: [
-    GrpcInterceptors::Server::OpenTelemetryTracingInstrument.new
+    GrpcInterceptors::Server::OpenTelemetryTracingInterceptor.new
   ]
 )
 ```
@@ -76,7 +75,7 @@ GRPC::RpcServer.new(
 ```ruby
 GRPC::RpcServer.new(
   interceptors: [
-    GrpcInterceptors::Client::OpenTelemetryTracingInstrument.new
+    GrpcInterceptors::Client::OpenTelemetryTracingInterceptor.new
   ]
 )
 ```

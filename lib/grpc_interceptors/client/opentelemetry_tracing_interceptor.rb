@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../client'
+require_relative '../kind'
 require_relative '../common/grpc_helper'
 require_relative '../common/opentelemetry_helper'
 
@@ -11,7 +11,7 @@ module GrpcInterceptors
         attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
 
         Common::OpenTelemetryHelper.tracer.in_span(
-          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
+          method, kind: GrpcInterceptors::Kind::CLIENT, attributes: attributes
         ) do
           OpenTelemetry.propagation.inject(metadata)
           yield
@@ -26,7 +26,7 @@ module GrpcInterceptors
         attributes = Common::OpenTelemetryHelper.tracing_attributes(method)
 
         Common::OpenTelemetryHelper.tracer.in_span(
-          method, kind: GrpcInterceptors::Client::KIND, attributes: attributes
+          method, kind: GrpcInterceptors::Kind::CLIENT, attributes: attributes
         ) do
           OpenTelemetry.propagation.inject(metadata)
           yield

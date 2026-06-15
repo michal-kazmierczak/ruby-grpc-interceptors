@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../client'
+require_relative '../kind'
 require_relative '../common/grpc_helper'
 require_relative '../common/logging'
 
@@ -16,7 +16,7 @@ module GrpcInterceptors
       def request_response(request: nil, call: nil, method: nil, &block)
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'unary', kind: GrpcInterceptors::Server::KIND, &block
+          method_type: 'unary', kind: GrpcInterceptors::Kind::SERVER, &block
         )
       end
 

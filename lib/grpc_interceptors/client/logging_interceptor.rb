@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../client'
+require_relative '../kind'
 require_relative '../common/grpc_helper'
 require_relative '../common/logging'
 
@@ -18,7 +18,7 @@ module GrpcInterceptors
       )
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'unary', kind: GrpcInterceptors::Client::KIND, &block
+          method_type: 'unary', kind: GrpcInterceptors::Kind::CLIENT, &block
         )
       end
 
@@ -37,7 +37,7 @@ module GrpcInterceptors
       )
         Common::Logging.yield_and_log(
           logger: @logger, request: request, method: method,
-          method_type: 'server_stream', kind: GrpcInterceptors::Client::KIND, &block
+          method_type: 'server_stream', kind: GrpcInterceptors::Kind::CLIENT, &block
         )
       end
 
