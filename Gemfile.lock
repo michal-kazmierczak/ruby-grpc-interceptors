@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    grpc_interceptors (0.2.2)
+    grpc_interceptors (0.2.2.rc1)
 
 GEM
   remote: https://rubygems.org/
