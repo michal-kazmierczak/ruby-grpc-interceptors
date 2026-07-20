@@ -1,8 +1,33 @@
 # frozen_string_literal: true
 
+require 'logger'
+
 module GrpcInterceptors
   module Common
     module Logging
+      SYMBOL_TO_SEVERITY = {
+        trace: ::Logger::Severity::DEBUG,
+        debug: ::Logger::Severity::DEBUG,
+        info: ::Logger::Severity::INFO,
+        warn: ::Logger::Severity::WARN,
+        error: ::Logger::Severity::ERROR,
+        fatal: ::Logger::Severity::FATAL
+      }.freeze
+
+      # Some logger implementations (e.g. SemanticLogger-backed CasinoLogger)
+      # expose #level as a Symbol rather than the ::Logger::Severity Integer
+      # constants this module compares against. Normalize here so any logger
+      # duck-typed with #level/#info/#debug works without a per-service wrapper.
+      def self.normalized_level(logger)
+        raw = logger.respond_to?(:level) ? logger.level : ::Logger::Severity::INFO
+
+        case raw
+        when Integer then raw
+        when Symbol then SYMBOL_TO_SEVERITY.fetch(raw, ::Logger::Severity::INFO)
+        else ::Logger::Severity::INFO
+        end
+      end
+
       def self.yield_and_log(
         logger: nil, request: nil, method: nil, method_type: nil, kind: nil
       )
@@ -21,7 +46,7 @@ module GrpcInterceptors
         extra_fields ||= {}
         extra_fields['grpc.code'] = grpc_code
 
-        if logger.level == ::Logger::Severity::DEBUG && !response.nil? && !response.is_a?(Enumerator)
+        if normalized_level(logger) == ::Logger::Severity::DEBUG && !response.nil? && !response.is_a?(Enumerator)
           extra_fields['response'] = Common::GrpcHelper.proto_to_h(response)
         end
 
@@ -49,9 +74,10 @@ module GrpcInterceptors
         payload = build_payload(method, method_type, kind)
         payload.merge!(extra_fields)
 
-        if logger.level == ::Logger::Severity::INFO
+        level = normalized_level(logger)
+        if level == ::Logger::Severity::INFO
           logger.info(payload)
-        elsif logger.level == ::Logger::Severity::DEBUG
+        elsif level == ::Logger::Severity::DEBUG
           payload['request'] = Common::GrpcHelper.proto_to_h(request) unless request.nil?
           logger.debug(payload)
         end

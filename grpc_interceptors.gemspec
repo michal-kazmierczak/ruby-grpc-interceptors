@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'grpc_interceptors'
-  spec.version = '0.2.1'
+  spec.version = '0.2.2'
   spec.authors = %w[michal-kazmierczak andykimchris]
   spec.homepage = 'https://github.com/michal-kazmierczak/ruby-grpc-interceptors'
   spec.summary = 'A collection of Ruby interceptors (middlewares) for gRPC servers and clients.'
@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'grpc-tools', '~> 1.67'
   spec.add_development_dependency 'guard', '~> 2.18'
   spec.add_development_dependency 'guard-minitest', '~> 2.4'
+  spec.add_development_dependency 'logger', '~> 1.7'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'minitest-reporters', '~> 1.6.1'
   spec.add_development_dependency 'opentelemetry-sdk', '~> 1.0'
