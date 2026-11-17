@@ -16,7 +16,7 @@ module GrpcInterceptors
         code = e.is_a?(GRPC::BadStatus) ? e.code : GRPC::Core::StatusCodes::UNKNOWN
         raise
       ensure
-        labels.merge(grpc_code: code)
+        labels[:grpc_code] = code
         elapsed_time = Time.now - start_time
         StatsD.histogram('grpc_latency_seconds', elapsed_time, tags: labels)
       end

@@ -33,6 +33,8 @@ When the `LOG_LEVEL` env variable is set to `INFO` then the server logs out.
 
 When the `LOG_LEVEL` env variable is set to `DEBUG` then the server additionally adds the request to the log message. (Note, adding the response is currently blocked by [this gRPC issue](https://github.com/grpc/grpc/pull/26547).)
 
+A failed call is logged whatever the log level, with the event `<METHOD>_<CODE>` (e.g. `SIGN_OFF_ROUND_FAILED_PRECONDITION`): at `warn` when the caller caused it (`INVALID_ARGUMENT`, `NOT_FOUND`, `FAILED_PRECONDITION`, ...) and at `error` otherwise. An error that must be answered with another code but was still caused by the caller can say so by defining `caller_caused?` to return true. `GrpcInterceptors::Common::Logging.caller_caused_error?(error)` tells the two apart, e.g. for a Sentry interceptor.
+
 ### StatsD metrics
 
 ```ruby

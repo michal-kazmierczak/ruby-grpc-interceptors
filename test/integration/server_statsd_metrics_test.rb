@@ -40,7 +40,8 @@ describe GrpcInterceptors::Server::StatsDMetrics do
         [
           'grpc_method:request_response_ping',
           'grpc_service:support.PingServer',
-          'grpc_type:unary'
+          'grpc_type:unary',
+          'grpc_code:0'
         ],
         metrics.first.tags
       )
