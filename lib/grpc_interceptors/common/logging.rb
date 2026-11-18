@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'grpc'
 require 'logger'
 
 module GrpcInterceptors
